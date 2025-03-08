@@ -1,7 +1,7 @@
 
 # RealmEye item search
 
-Add a search bar to realmeye's item selection panel so you don't have to manually find an item in a huge list.
+Add a search bar to realmeye's item selection panel so you don't have to manually find an item in a huge list. [Forum post](https://www.realmeye.com/forum/t/i-made-a-search-feature-for-realmeye-trading/82146/2)
 ## Screenshots
 
 ![App Screenshot](https://i.imgur.com/32DQrNu.gif)
