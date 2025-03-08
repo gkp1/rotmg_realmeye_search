@@ -9,7 +9,7 @@ Add a search bar to realmeye's item selection panel so you don't have to manuall
 
 ## Install
 
-1. Install [Tampermonkey](https://tampermonkey.net/) extension in your browser. 'violentmonkey' also
+1. Install [Tampermonkey](https://tampermonkey.net/) extension in your browser. 'violentmonkey' is another option
 
 2. #### **Click here to install the userscript:** 
 [![https://img.shields.io/badge/Click%20the%20message-8A2BE2](https://img.shields.io/badge/Click%20to%20install-8A2BE2)](https://github.com/gkp1/rotmg_realmeye_search/raw/refs/heads/main/reyesearch.user.js)
