@@ -1,30 +1,28 @@
 // ==UserScript==
-// @name        Add item search for RealmEye offers page
-// @namespace   Violentmonkey Scripts
-// @match       https://www.realmeye.com/edit-offers-by/*
-// @grant       none
-// @version     1.0.2
-// @author      gkp1
-// @updateURL    https://raw.githubusercontent.com/gkp1/rotmg_realmeye_search/refs/heads/main/reyesearch.user.js
-// @downloadURL  https://raw.githubusercontent.com/gkp1/rotmg_realmeye_search/refs/heads/main/reyesearch.user.js
+// @name         Add item search for RealmEye offers page
+// @namespace    Violentmonkey Scripts
+// @match        https://www.realmeye.com/edit-offers-by/*
+// @grant        none
+// @version      1.0.0
+// @author       -
 // @description 06/03/2025, 23:15:03
 // ==/UserScript==
 
 (function () {
-  const modal = document.querySelector("#item-selector > div > div > div");
+    const modal = document.querySelector("#item-selector > div > div > div");
 
-  const searchContainer = document.createElement("div");
-  searchContainer.className = "item-search-container";
-  searchContainer.innerHTML = `
+    const searchContainer = document.createElement("div");
+    searchContainer.className = "item-search-container";
+    searchContainer.innerHTML = `
         <input type="text"
-               class="item-search-input"
-               placeholder="Search items..."
-               aria-label="Search items">
+            class="item-search-input"
+            placeholder="Search items..."
+            aria-label="Search items">
         <div class="search-clear-btn" hidden aria-label="Clear search">×</div>
     `;
 
-  const style = document.createElement("style");
-  style.textContent = `
+    const style = document.createElement("style");
+    style.textContent = `
         .item-search-container {
             position: relative;
             padding: 12px;
@@ -60,58 +58,72 @@
         }
     `;
 
-  document.head.appendChild(style);
-  modal.insertBefore(searchContainer, modal.firstChild);
+    document.head.appendChild(style);
+    modal.insertBefore(searchContainer, modal.firstChild);
 
-  const searchInput = searchContainer.querySelector(".item-search-input");
-  const clearButton = searchContainer.querySelector(".search-clear-btn");
-  const items = Array.from(modal.querySelectorAll(".item-wrapper"));
+    const searchInput = searchContainer.querySelector(".item-search-input");
+    const clearButton = searchContainer.querySelector(".search-clear-btn");
+    const items = Array.from(modal.querySelectorAll(".item-wrapper"));
 
-  const debounce = (func, delay = 300) => {
-    let timeout;
-    return (...args) => {
-      clearTimeout(timeout);
-      timeout = setTimeout(() => func.apply(this, args), delay);
+    const debounce = (func, delay = 300) => {
+        let timeout;
+        return (...args) => {
+            clearTimeout(timeout);
+            timeout = setTimeout(() => func.apply(this, args), delay);
+        };
     };
-  };
 
-  const filterItems = (searchTerm) => {
-    const normalizedSearch = searchTerm.toLowerCase().trim();
+    const filterItems = (searchTerm) => {
+        const normalizedSearch = searchTerm.toLowerCase().trim();
 
-    items.forEach((item) => {
-      const title = item.getAttribute("title").toLowerCase();
-      let isVisible = false;
+        items.forEach((item) => {
+            const title = item.getAttribute("title").toLowerCase();
+            let isVisible = false;
 
-      if (!normalizedSearch) {
-        isVisible = true;
-      } else {
-        const searchWords = normalizedSearch.split(/\s+/);
-        const titleWords = title.split(/\s+/);
+            if (!normalizedSearch) {
+                isVisible = true;
+            } else {
+                const searchWords = normalizedSearch.split(/\s+/);
+                const titleWords = title.split(/\s+/);
 
-        isVisible = searchWords.every((searchWord) => title.includes(searchWord) || titleWords.some((titleWord) => titleWord.startsWith(searchWord)));
-      }
+                isVisible = searchWords.every((searchWord) => title.includes(searchWord) || titleWords.some((titleWord) => titleWord.startsWith(searchWord)));
+            }
 
-      item.hidden = !isVisible;
+            item.hidden = !isVisible;
+        });
+
+        clearButton.hidden = normalizedSearch === "";
+    };
+
+    const handleSearch = debounce((e) => {
+        filterItems(e.target.value);
     });
 
-    clearButton.hidden = normalizedSearch === "";
-  };
+    const clearSearch = () => {
+        searchInput.value = "";
+        filterItems("");
+        searchInput.focus();
+    };
 
-  const handleSearch = debounce((e) => {
-    filterItems(e.target.value);
-  });
+    searchInput.addEventListener("input", handleSearch);
+    clearButton.addEventListener("click", clearSearch);
+    searchInput.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") clearSearch();
+    });
 
-  const clearSearch = () => {
-    searchInput.value = "";
     filterItems("");
-    searchInput.focus();
-  };
 
-  searchInput.addEventListener("input", handleSearch);
-  clearButton.addEventListener("click", clearSearch);
-  searchInput.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") clearSearch();
-  });
+    // Auto-focus logic
+    const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+            if (mutation.attributeName === "style") {
+                if (modal.style.display !== "none") {
+                    searchInput.focus();
+                }
+            }
+        });
+    });
 
-  filterItems("");
+    observer.observe(modal, { attributes: true, attributeFilter: ["style"] });
+
 })();
