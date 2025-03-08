@@ -3,8 +3,10 @@
 // @namespace    Violentmonkey Scripts
 // @match        https://www.realmeye.com/edit-offers-by/*
 // @grant        none
-// @version      1.0.0
-// @author       -
+// @version     1.0.3
+// @author      gkp1
+// @updateURL    https://raw.githubusercontent.com/gkp1/rotmg_realmeye_search/refs/heads/main/reyesearch.user.js
+// @downloadURL  https://raw.githubusercontent.com/gkp1/rotmg_realmeye_search/refs/heads/main/reyesearch.user.js
 // @description 06/03/2025, 23:15:03
 // ==/UserScript==
 
