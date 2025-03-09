@@ -19,5 +19,7 @@ Add a search bar to realmeye's item selection panel so you don't have to manuall
 ## To-do
 
 Add searchbar to the SEARCH OFFERS page
+
+
 Need to fix auto focus on input
 
